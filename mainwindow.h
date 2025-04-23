@@ -6,6 +6,13 @@
 #include <QMenu>
 #include <QToolBar>
 #include <QAction>
+#include <QTabWidget>
+#include <QWidget>
+#include <QSplitter>
+#include <QPushButton>
+#include <QVBoxLayout>
+#include <QListWidget>
+#include <QGroupBox>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -26,14 +33,35 @@ private:
     QMenuBar *mainMenuBar;
     QMenu *sessionMenu;
     QMenu *viewMenu;
+    QMenu *X11Menu;
     QAction *terminalSessionAction;
     QAction *fileSessionAction;
     QToolBar *mainTool;
     QAction *terminalSessionToolAction;
     QAction *fileSessionToolAction;
+    QTabWidget *leftTabWidget;
+    QTabWidget *rightTabWidget;
+    QSplitter *mainSplitter;
+    QSplitter *leftSplitter;
+    QWidget *sessionItem;
+    QWidget *mainInterface;
+    QGroupBox *terminalSessionGroupBox;
+    QGroupBox *fileSessionGroupBox;
+    QListWidget *terminalListWidget;//命令行会话项列表
+    QListWidget *fileListWidget;//文件会话项列表
+    QPushButton *terminalSessionBtn;
+    QPushButton *fileSessionBtn;
+    QVBoxLayout *mainLayout;
+    QVBoxLayout *sessionItemLayout;
+    QVBoxLayout *terminalSessionLayout;
+    QVBoxLayout *fileSessionLayout;
 
-    void createMenu();
-    void createTool();
+
+
+
+    void createMainMenu();
+    void createMainTool();
+    void createMianTabWidget();
 
 };
 #endif // MAINWINDOW_H
