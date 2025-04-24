@@ -10,6 +10,13 @@ MainWindow::MainWindow(QWidget *parent)
     this->createMainMenu();
     this->createMainTool();
     this->createMianTabWidget();
+    connect(terminalSessionAction, &QAction::triggered, this, &MainWindow::createSshLoginDiglog);
+    connect(fileSessionAction, &QAction::triggered, this, &MainWindow::createSshLoginDiglog);
+    connect(terminalSessionToolAction, &QAction::triggered, this, &MainWindow::createSshLoginDiglog);
+    connect(fileSessionToolAction, &QAction::triggered, this, &MainWindow::createSshLoginDiglog);
+    connect(terminalSessionBtn, &QPushButton::clicked, this, &MainWindow::createSshLoginDiglog);
+    connect(fileSessionBtn, &QPushButton::clicked, this, &MainWindow::createSshLoginDiglog);
+
 }
 
 MainWindow::~MainWindow()
@@ -96,6 +103,15 @@ void MainWindow::createMianTabWidget(){
 
     setCentralWidget(mainSplitter);
 
+
+}
+/*********************登录弹窗************************************/
+void MainWindow::createSshLoginDiglog(){
+    sshLoginDialog = new QsshLoginDialog(this);
+    if(sshLoginDialog->exec() == QDialog::Accepted){
+
+
+    }
 
 }
 

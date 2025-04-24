@@ -13,6 +13,7 @@
 #include <QVBoxLayout>
 #include <QListWidget>
 #include <QGroupBox>
+#include <qlogindialog.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -56,12 +57,14 @@ private:
     QVBoxLayout *terminalSessionLayout;
     QVBoxLayout *fileSessionLayout;
 
-
+    QsshLoginDialog *sshLoginDialog;
 
 
     void createMainMenu();
     void createMainTool();
     void createMianTabWidget();
+public slots:
+    void createSshLoginDiglog();
 
 };
 #endif // MAINWINDOW_H
