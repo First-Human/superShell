@@ -11,6 +11,8 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QSpinBox>
+#include <QComboBox>
+#include <QGroupBox>
 
 
 class QsshLoginDialog : public QDialog
@@ -23,21 +25,20 @@ public:
 private:
     QVBoxLayout *loginLayout;
     QTabWidget *Login;
-    QWidget *sshPasswdLogin, *sshPubKeyLogin, *telnetLogin;
+    QWidget *sshLogin, *telnetLogin;
 
-    QLabel *passwdUserNameLabel, *passwdIpAddressLabel, *passwdPortLabel, *passwdPwdLabel;
-    QLineEdit *passwdUserName, *passwdIpAddress, *passwdPwd;
-    QSpinBox *passwdPort;
-    QHBoxLayout *passwdUserNameLayout, *passwdIpAddressLayout, *passwdPortLayout, *passwdPwdLayout;
-    QVBoxLayout *passwdLayout;
-    QPushButton *passwdConnectBtn;
+    QLabel *sshUserNameLabel, *sshIpAddressLabel, *sshPortLabel, *sshPasswdLabel, *sshPubkPathLabel, *sshLoginTypeLabel;
+    QLineEdit *sshUserName, *sshIpAddress, *sshPasswd, *sshPubkPath;
+    QLabel *sshHostkeyAlgLabel, *sshKexAlgLabel, *sshCiherAlgLabel, *sshMacAlgLabel;
+    QComboBox *sshLoginType, *sshHostkeyAlgCheck, *sshKexAlgCheck, *sshCipherAlgCheck, *sshMacAlgCheck;
+    QSpinBox *sshPort;
+    QHBoxLayout *sshLoginTypeLayout, *sshUserNamePasswdLayout, *sshIpAddressPortLayout, *sshPubkPathLayout;
+    QHBoxLayout *sshHostkeyAlgLayout, *sshKexAlgLayout, *sshCipherAlgLayout, *sshMacAlgLayout;
+    QVBoxLayout *sshLayout, *loginParamLayout, *algParamLayout;
+    QPushButton *sshConnectBtn;
+    QGroupBox *loginParamGroupBox, *algCheckGroupBox;
 
-    QLabel *pkeyUserNameLabel, *pkeyIpAddressLabel, *pkeyPortLabel, *pkeyPathLabel;
-    QLineEdit *pkeyUserName, *pkeyIpAddress, *pkeyPath;
-    QSpinBox *pkeyPort;
-    QHBoxLayout *pkeyUserNameLayout, *pkeyIpAddressLayout, *pkeyPortLayout, *pkeyPathLayout;
-    QVBoxLayout *pkeyLayout;
-    QPushButton *pkeyConnectBtn;
+
 
     QLabel *telnetUserNameLabel, *telnetIpAddressLabel, *telnetPortLabel, *telnetPwdLabel;
     QLineEdit *telnetUserName, *telnetIpAddress, *telnetPwd;
@@ -48,11 +49,16 @@ private:
 
 
     void createLoginWidget();
-    void passwdLogin();
-    void pubKeyLogin();
-    void telLogin();
+    void sshLoginWidget();
+    void telLoginWidget();
 
 signals:
+
+public slots:
+    void sshLoginTypeSlots(int index);
+
+
+
 };
 
 #endif // QLOGINDIALOG_H
