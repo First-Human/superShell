@@ -20,11 +20,11 @@ class QsshLoginDialog : public QDialog
 {
     Q_OBJECT
 public:
-    QsshLoginDialog(int loginSessionType, QWidget *parent = nullptr);
+    QsshLoginDialog(int *loginSessionType, QWidget *parent = nullptr);
 
 
 private:
-    int sessionType;
+    int *sessionType;
     QVBoxLayout *loginLayout;
     QTabWidget *Login;
     QWidget *sshLogin, *telnetLogin;

@@ -1,6 +1,6 @@
 #include "qlogindialog.h"
 
-QsshLoginDialog::QsshLoginDialog(int loginSessionType, QWidget *parent)
+QsshLoginDialog::QsshLoginDialog(int *loginSessionType, QWidget *parent)
     : QDialog{parent}
 {
     setWindowTitle("登录");
@@ -53,7 +53,7 @@ void QsshLoginDialog::sshLoginWidget(){
     sshSeionType->addItem("命令会话");
     sshSeionType->addItem("文件会话");
     sshSeionType->setFixedSize(100,30);
-    sshSeionType->setCurrentIndex(sessionType);
+    sshSeionType->setCurrentIndex(*sessionType);
 
     sshUserName = new QLineEdit();
     sshUserName->setFixedSize(150,30);
@@ -197,7 +197,6 @@ void QsshLoginDialog::sshLoginResetSlots(){
     sshPubkPath->setText("");
     sshPort->setValue(22);
     sshLoginType->setCurrentIndex(0);
-    sshSeionType->setCurrentIndex(0);
     sshHostkeyAlgCheck->setCurrentIndex(0);
     sshKexAlgCheck->setCurrentIndex(0);
     sshCipherAlgCheck->setCurrentIndex(0);
@@ -205,11 +204,12 @@ void QsshLoginDialog::sshLoginResetSlots(){
     sshPasswd->setEnabled(true);
     sshPubkPath->setEnabled(false);
     sshPubkPathBtn->setEnabled(false);
-    sshSeionType->setCurrentIndex(sessionType);
+    sshSeionType->setCurrentIndex(*sessionType);
 
 }
 
 void QsshLoginDialog::sshLoginSlots(){
+    *sessionType = sshSeionType->currentIndex();
     /*连接ssh
     ***如果连接成功则返回accept
     ***如果连接失败则报错

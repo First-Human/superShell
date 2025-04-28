@@ -131,7 +131,7 @@ void MainWindow::createFileLogin(){
 }
 /*********************登录弹窗************************************/
 void MainWindow::createLoginDiglog(int sessionType){
-    sshLoginDialog = new QsshLoginDialog(sessionType, this);
+    sshLoginDialog = new QsshLoginDialog(&sessionType, this);
     if(sshLoginDialog->exec() == QDialog::Accepted){
         if(sessionType == 0){//命令行显示
             QWidget *terminalSessionWd = new QWidget();
