@@ -38,7 +38,7 @@ MainWindow::~MainWindow()
 /******************创建菜单栏******************************/
 void MainWindow::createMainMenu(){
     mainMenuBar = new QMenuBar();
-    sessionMenu = new QMenu("会话");
+    sessionMenu = new QMenu("登录");
     keyMenu = new QMenu("生成密钥");
     viewMenu = new QMenu("视图");
     X11Menu = new QMenu("X11");
