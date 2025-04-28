@@ -14,6 +14,8 @@
 #include <QListWidget>
 #include <QGroupBox>
 #include <qlogindialog.h>
+#include <QTextEdit>
+#include <QDebug>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -33,8 +35,10 @@ private:
     Ui::MainWindow *ui;
     QMenuBar *mainMenuBar;
     QMenu *sessionMenu;
+    QMenu *keyMenu;
     QMenu *viewMenu;
     QMenu *X11Menu;
+    QMenu *setingMenu;
     QAction *terminalSessionAction;
     QAction *fileSessionAction;
     QToolBar *mainTool;
@@ -64,7 +68,13 @@ private:
     void createMainTool();
     void createMianTabWidget();
 public slots:
-    void createSshLoginDiglog();
+    void createTerminalLogin();
+    void createFileLogin();
+    void createLoginDiglog(int sessionType);
+
+signals:
+    void terminalLogin(int type);
+    void fileLogin(int type);
 
 };
 #endif // MAINWINDOW_H

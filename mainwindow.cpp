@@ -10,12 +10,23 @@ MainWindow::MainWindow(QWidget *parent)
     this->createMainMenu();
     this->createMainTool();
     this->createMianTabWidget();
-    connect(terminalSessionAction, &QAction::triggered, this, &MainWindow::createSshLoginDiglog);
-    connect(fileSessionAction, &QAction::triggered, this, &MainWindow::createSshLoginDiglog);
-    connect(terminalSessionToolAction, &QAction::triggered, this, &MainWindow::createSshLoginDiglog);
-    connect(fileSessionToolAction, &QAction::triggered, this, &MainWindow::createSshLoginDiglog);
-    connect(terminalSessionBtn, &QPushButton::clicked, this, &MainWindow::createSshLoginDiglog);
-    connect(fileSessionBtn, &QPushButton::clicked, this, &MainWindow::createSshLoginDiglog);
+    connect(terminalSessionAction, &QAction::triggered, this, &MainWindow::createTerminalLogin);
+    connect(fileSessionAction, &QAction::triggered, this, &MainWindow::createFileLogin);
+    connect(terminalSessionToolAction, &QAction::triggered, this, &MainWindow::createTerminalLogin);
+    connect(fileSessionToolAction, &QAction::triggered, this, &MainWindow::createFileLogin);
+    connect(terminalSessionBtn, &QPushButton::clicked, this, &MainWindow::createTerminalLogin);
+    connect(fileSessionBtn, &QPushButton::clicked, this, &MainWindow::createFileLogin);
+    connect(this, &MainWindow::terminalLogin, this, &MainWindow::createLoginDiglog);
+    connect(this, &MainWindow::fileLogin, this, &MainWindow::createLoginDiglog);
+    connect(rightTabWidget, &QTabWidget::tabCloseRequested, this, [=](int index){
+        // 获取要关闭的标签页内容
+        QWidget* tabContent = rightTabWidget->widget(index);
+        // 删除标签页内容对象，防止内存泄漏
+        tabContent->deleteLater();
+        // 从tabWidget中移除标签页
+        rightTabWidget->removeTab(index);
+
+    });
 
 }
 
@@ -28,15 +39,19 @@ MainWindow::~MainWindow()
 void MainWindow::createMainMenu(){
     mainMenuBar = new QMenuBar();
     sessionMenu = new QMenu("会话");
+    keyMenu = new QMenu("生成密钥");
     viewMenu = new QMenu("视图");
     X11Menu = new QMenu("X11");
+    setingMenu = new QMenu("系统设置");
     terminalSessionAction = new QAction("命令界面");
     fileSessionAction = new QAction("文件界面");
 
     this->setMenuBar(mainMenuBar);
     mainMenuBar->addMenu(sessionMenu);
+    mainMenuBar->addMenu(keyMenu);
     mainMenuBar->addMenu(viewMenu);
     mainMenuBar->addMenu(X11Menu);
+    mainMenuBar->addMenu(setingMenu);
     sessionMenu->addAction(terminalSessionAction);
     sessionMenu->addAction(fileSessionAction);
 }
@@ -54,6 +69,7 @@ void MainWindow::createMainTool(){
 void MainWindow::createMianTabWidget(){
     leftTabWidget = new QTabWidget();
     rightTabWidget = new QTabWidget();
+    rightTabWidget->setTabsClosable(true);
     mainSplitter = new QSplitter();
     mainSplitter->addWidget(leftTabWidget);
     mainSplitter->addWidget(rightTabWidget);
@@ -71,7 +87,7 @@ void MainWindow::createMianTabWidget(){
     rightTabWidget->addTab(mainInterface, "主界面");
     /****************左标签页容器会话界面布局**********************/
     sessionItem = new QWidget();
-    leftTabWidget->addTab(sessionItem, "话会");
+    leftTabWidget->addTab(sessionItem, "会话");
     leftTabWidget->setTabPosition(QTabWidget::West);
     leftSplitter = new QSplitter(Qt::Vertical, sessionItem);
     terminalSessionGroupBox = new QGroupBox("命令会话");
@@ -105,11 +121,39 @@ void MainWindow::createMianTabWidget(){
 
 
 }
-/*********************登录弹窗************************************/
-void MainWindow::createSshLoginDiglog(){
-    sshLoginDialog = new QsshLoginDialog(this);
-    if(sshLoginDialog->exec() == QDialog::Accepted){
 
+void MainWindow::createTerminalLogin(){
+    emit terminalLogin(0);
+
+}
+void MainWindow::createFileLogin(){
+    emit fileLogin(1);
+}
+/*********************登录弹窗************************************/
+void MainWindow::createLoginDiglog(int sessionType){
+    sshLoginDialog = new QsshLoginDialog(sessionType, this);
+    if(sshLoginDialog->exec() == QDialog::Accepted){
+        if(sessionType == 0){//命令行显示
+            QWidget *terminalSessionWd = new QWidget();
+            QVBoxLayout *terminalLayout = new QVBoxLayout();
+            terminalSessionWd->setLayout(terminalLayout);
+            QTextEdit *textWind = new QTextEdit();
+            terminalLayout->addWidget(textWind);
+            int count = rightTabWidget->count();
+            int index = rightTabWidget->addTab(terminalSessionWd, "命令界面"+QString::number(count+1));
+            rightTabWidget->setCurrentIndex(index);
+
+        }
+        else{//文件显示
+            QWidget *fileSessionWd = new QWidget();
+            QVBoxLayout *fileLayout = new QVBoxLayout();
+            fileSessionWd->setLayout(fileLayout);
+            QTextEdit *textWind = new QTextEdit();
+            fileLayout->addWidget(textWind);
+            int count = rightTabWidget->count();
+            int index = rightTabWidget->addTab(fileSessionWd, "文件界面"+QString::number(count+1));
+            rightTabWidget->setCurrentIndex(index);
+        }
 
     }
 
